@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Popup</title>
+    <style>
+      html {
+        font-size: 62.5%;
+      }
+      a {
+        color: unset;
+        text-decoration: none;
+      }
+      button {
+        border: none;
+        cursor: pointer;
+      }
+      .popup-container {
+        width: 100vw;
+        height: 100vh;
+        transform: scale(0);
+        transition: all 0.5s;
+        position: absolute;
+        top: 0;
+        left: 0;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+      .popup-box {
+        width: 30%;
+        position: relative;
+      }
+      .ad-image {
+        width: 100%;
+      }
+      .popup-open {
+        transform: scale(1);
+      }
+      .btn-close {
+        position: absolute;
+        top: -2rem;
+        right: -2rem;
+        width: 5rem;
+        height: 5rem;
+        padding: 1rem;
+        border-radius: 50%;
+        background-color: white;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border: 2px solid aquamarine;
+      }
+      .close-icon {
+        height: 3rem;
+        width: 3rem;
+      }
+      @media only screen and (max-width: 860px) {
+        html {
+          font-size: 58%;
+        }
+        .popup-box {
+          width: 50%;
+        }
+      }
+      @media only screen and (max-width: 560px) {
+        html {
+          font-size: 55%;
+        }
+        .popup-box {
+          width: 80%;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <button type="button" class="btn-open">Open popup</button>
+    <div class="popup-container">
+      <div class="popup-box">
+        <a href="https://www.google.com/" target="_blank">
+          <img src="./ad.jpg" alt="popup" class="ad-image" />
+        </a>
+        <button type="button" class="btn-close">
+          <img src="./times-circle-solid.svg" alt="close" class="close-icon" />
+        </button>
+      </div>
+    </div>
+    <script>
+      // selecting elements
+      const btnOpen = document.querySelector(".btn-open");
+      const popupContainer = document.querySelector(".popup-container");
+      const btnClose = document.querySelector(".btn-close");
+
+      // open popup
+      btnOpen.addEventListener("click", (e) => {
+        popupContainer.classList.add("popup-open");
+      });
+
+      // for closing popup
+      const closePopup = (e) => {
+        popupContainer.classList.contains("popup-open") &&
+          popupContainer.classList.remove("popup-open");
+      };
+
+      // close popup
+      btnClose.addEventListener("click", closePopup);
+
+      // for closing the popup when the user click anwhere else in the page
+      //   document.addEventListener("click", closePopup, true);
+
+      // esc key close popup
+      document.addEventListener("keydown", (e) => {
+        if (e.key === "Escape") {
+          closePopup();
+        }
+      });
+    </script>
+  </body>
+</html>
