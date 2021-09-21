@@ -116,6 +116,10 @@
           closePopup();
         }
       });
+
+      window.onload = function () {
+        setTimeout(() => popupContainer.classList.add("popup-open"), 1000);
+      };
     </script>
   </body>
 </html>
