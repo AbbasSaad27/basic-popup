@@ -76,10 +76,9 @@
     </style>
   </head>
   <body>
-    <button type="button" class="btn-open">Open popup</button>
     <div class="popup-container">
       <div class="popup-box">
-        <a href="https://www.google.com/" target="_blank">
+        <a href="https://www.google.com/" target="_blank" class="ad-link">
           <img src="./ad.jpg" alt="popup" class="ad-image" />
         </a>
         <button type="button" class="btn-close">
@@ -89,14 +88,11 @@
     </div>
     <script>
       // selecting elements
-      const btnOpen = document.querySelector(".btn-open");
+
       const popupContainer = document.querySelector(".popup-container");
       const btnClose = document.querySelector(".btn-close");
-
-      // open popup
-      btnOpen.addEventListener("click", (e) => {
-        popupContainer.classList.add("popup-open");
-      });
+      const popupLink = document.querySelector(".ad-link");
+      const adImage = document.querySelector(".ad-image");
 
       // for closing popup
       const closePopup = (e) => {
@@ -107,9 +103,6 @@
       // close popup
       btnClose.addEventListener("click", closePopup);
 
-      // for closing the popup when the user click anwhere else in the page
-      //   document.addEventListener("click", closePopup, true);
-
       // esc key close popup
       document.addEventListener("keydown", (e) => {
         if (e.key === "Escape") {
@@ -117,8 +110,91 @@
         }
       });
 
+      // rotate between ads in the same popup
+      const rotatePopup = (curr) => {
+        if (curr === 1) {
+          popupLink.href = "https://www.google.com/";
+          adImage.src = "./ad.jpg";
+        }
+        if (curr === 2) {
+          popupLink.href = "https://www.bing.com/";
+          adImage.src = "./ad2.jpg";
+        }
+        if (curr === 3) {
+          popupLink.href = "https://www.youtube.com/";
+          adImage.src = "./ad3.jpg";
+        }
+      };
+
+      // check difference between time passed
+      const checkDiff = (value, itemName) => {
+        if (!value) {
+          value = new Date().toString();
+          localStorage.setItem(itemName, value);
+        }
+
+        // check the diff to see if it has been 10min since the last popup
+        return new Date().getTime() - new Date(value).getTime();
+      };
+
+      // initializing ad number
+      let currAd = 1;
+
+      // for rotating popup
+      setInterval(function () {
+        if (window.localStorage) {
+          // getting the time when the last ad was updated
+          let prevAd = localStorage.getItem("prevAd");
+
+          // getting the difference between current time and the time of last ad change
+          let diff = checkDiff(prevAd, "prevAd");
+
+          // if condition meets update the ad
+          if (diff >= 1000 * 40) {
+            currAd >= 3 ? (currAd = 1) : currAd++;
+            // setting the ad number in the localstorage
+            localStorage.setItem("adNo", currAd);
+            localStorage.setItem("prevAd", new Date().toString());
+            rotatePopup(currAd);
+          }
+        } else {
+          currAd >= 3 ? (currAd = 1) : currAd++;
+          setInterval(() => {
+            rotatePopup(currAd);
+          }, 1000 * 60 * 10);
+        }
+      }, 1000);
+
+      window.setInterval(function () {
+        // First check, if localStorage is supported.
+        if (window.localStorage) {
+          // time of the previous popup
+          let prevPopup = localStorage.getItem("prevPopup");
+
+          // getting the difference between current time and the time of the last popup (in milisecond)
+          let diff = checkDiff(prevPopup, "prevPopup");
+
+          // if the condition meets then open popup and set the timer
+          if (diff >= 1000 * 40) {
+            localStorage.setItem("prevPopup", new Date().toString());
+            popupContainer.classList.add("popup-open");
+          }
+        } else {
+          // if local storage isn't available then it'll follow the traditional way of interval
+          setInterval(() => {
+            popupContainer.classList.add("popup-open");
+          }, 1000 * 60 * 10);
+        }
+      }, 1000);
+
+      // initialization
       window.onload = function () {
-        setTimeout(() => popupContainer.classList.add("popup-open"), 1000);
+        // checking if it exists
+        currAd = +localStorage.getItem("adNo")
+          ? +localStorage.getItem("adNo")
+          : 1;
+        rotatePopup(currAd);
+        popupContainer.classList.add("popup-open");
       };
     </script>
   </body>
