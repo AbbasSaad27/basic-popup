@@ -78,11 +78,19 @@
   <body>
     <div class="popup-container">
       <div class="popup-box">
-        <a href="https://www.google.com/" target="_blank" class="ad-link">
-          <img src="./ad.jpg" alt="popup" class="ad-image" />
+        <a
+          href="https://sflix.to/watch-movie/free-candyman-hd-71512.4646929/"
+          target="_blank"
+          class="ad-link"
+        >
+          <img src="./UUijo0H.gif" alt="popup" class="ad-image" />
         </a>
         <button type="button" class="btn-close">
-          <img src="./times-circle-solid.svg" alt="close" class="close-icon" />
+          <img
+            src="https://streamrapid.ru/images/close.png"
+            alt="close"
+            class="close-icon"
+          />
         </button>
       </div>
     </div>
@@ -138,32 +146,32 @@
       };
 
       // initializing ad number
-      let currAd = 1;
+      // let currAd = 1;
 
       // for rotating popup
-      setInterval(function () {
-        if (window.localStorage) {
-          // getting the time when the last ad was updated
-          let prevAd = localStorage.getItem("prevAd");
+      // setInterval(function () {
+      //   if (window.localStorage) {
+      //     // getting the time when the last ad was updated
+      //     let prevAd = localStorage.getItem("prevAd");
 
-          // getting the difference between current time and the time of last ad change
-          let diff = checkDiff(prevAd, "prevAd");
+      //     // getting the difference between current time and the time of last ad change
+      //     let diff = checkDiff(prevAd, "prevAd");
 
-          // if condition meets update the ad
-          if (diff >= 1000 * 40) {
-            currAd >= 3 ? (currAd = 1) : currAd++;
-            // setting the ad number in the localstorage
-            localStorage.setItem("adNo", currAd);
-            localStorage.setItem("prevAd", new Date().toString());
-            rotatePopup(currAd);
-          }
-        } else {
-          currAd >= 3 ? (currAd = 1) : currAd++;
-          setInterval(() => {
-            rotatePopup(currAd);
-          }, 1000 * 60 * 10);
-        }
-      }, 1000);
+      //     // if condition meets update the ad
+      //     if (diff >= 1000 * 40) {
+      //       currAd >= 3 ? (currAd = 1) : currAd++;
+      //       // setting the ad number in the localstorage
+      //       localStorage.setItem("adNo", currAd);
+      //       localStorage.setItem("prevAd", new Date().toString());
+      //       rotatePopup(currAd);
+      //     }
+      //   } else {
+      //     currAd >= 3 ? (currAd = 1) : currAd++;
+      //     setInterval(() => {
+      //       rotatePopup(currAd);
+      //     }, 1000 * 60 * 10);
+      //   }
+      // }, 1000);
 
       window.setInterval(function () {
         // First check, if localStorage is supported.
@@ -175,7 +183,7 @@
           let diff = checkDiff(prevPopup, "prevPopup");
 
           // if the condition meets then open popup and set the timer
-          if (diff >= 1000 * 40) {
+          if (diff >= 1000 * 60 * 10) {
             localStorage.setItem("prevPopup", new Date().toString());
             popupContainer.classList.add("popup-open");
           }
@@ -190,10 +198,10 @@
       // initialization
       window.onload = function () {
         // checking if it exists
-        currAd = +localStorage.getItem("adNo")
-          ? +localStorage.getItem("adNo")
-          : 1;
-        rotatePopup(currAd);
+        // currAd = +localStorage.getItem("adNo")
+        //   ? +localStorage.getItem("adNo")
+        //   : 1;
+        // rotatePopup(currAd);
         popupContainer.classList.add("popup-open");
       };
     </script>
