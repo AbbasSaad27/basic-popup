@@ -1,60 +1,119 @@
-// selecting elements
+let popupContainer;
+let btnClose;
 
-const popupContainer = document.querySelector(".popup-container");
-const btnClose = document.querySelector(".btn-close");
-const popupLink = document.querySelector(".ad-link");
-const adImage = document.querySelector(".ad-image");
+const popupHtml = `
+<div class="popup-container">
+  <div class="popup-box">
+    <a
+      href="https://sflix.to/watch-movie/free-candyman-hd-71512.4646929/"
+      target="_blank"
+      class="ad-link"
+    >
+      <img
+        src="https://i.imgur.com/UUijo0H.gif"
+        alt="popup"
+        class="ad-image"
+      />
+    </a>
+    <button type="button" class="btn-close">
+      <img
+        src="https://streamrapid.ru/images/close.png"
+        alt="close"
+        class="close-icon"
+      />
+    </button>
+  </div>
+</div>`;
 
-// for closing popup
+const popupCss = `a {
+  color: unset;
+  text-decoration: none;
+}
+button {
+  border: none;
+  cursor: pointer;
+}
+.popup-container {
+  width: 100vw;
+  height: 100vh;
+  transform: scale(0);
+  transition: all 0.5s;
+  position: fixed;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.popup-box {
+  width: 30%;
+  position: relative;
+}
+.ad-image {
+  width: 100%;
+}
+.popup-open {
+  transform: scale(1);
+}
+.btn-close {
+  position: absolute;
+  top: -20px;
+  right: -20px;
+  width: 40px;
+  height: 40px;
+  padding: 10px;
+  border-radius: 50%;
+  background-color: white;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid aquamarine;
+}
+.close-icon {
+  height: 20px;
+  width: 20px;
+  pointer-events: none;
+}
+@media only screen and (max-width: 860px) {
+  html {
+    font-size: 58%;
+  }
+  .popup-box {
+    width: 50%;
+  }
+}
+@media only screen and (max-width: 560px) {
+  html {
+    font-size: 55%;
+  }
+  .popup-box {
+    width: 80%;
+  }
+}
+`;
+
 const closePopup = () => {
   popupContainer.classList.contains("popup-open") &&
     popupContainer.classList.remove("popup-open");
 };
 
-// close popup
-btnClose.addEventListener("click", closePopup);
-
-// esc key close popup
 document.addEventListener("keydown", (e) => {
   if (e.key === "Escape") {
     closePopup();
   }
 });
 
-// check difference between time passed
-const checkDiff = (value, itemName) => {
-  if (!value) {
-    value = new Date().toString();
-    localStorage.setItem(itemName, value);
-  }
-
-  // check the diff to see if it has been 10min since the last popup
-  return new Date().getTime() - new Date(value).getTime();
-};
-
 window.setInterval(function () {
-  // First check, if localStorage is supported.
-  if (window.localStorage) {
-    // time of the previous popup
-    let prevPopup = localStorage.getItem("prevPopup");
+  popupContainer.classList.add("popup-open");
+}, 1000 * 60 * 10);
 
-    // getting the difference between current time and the time of the last popup (in milisecond)
-    let diff = checkDiff(prevPopup, "prevPopup");
-
-    // if the condition meets then open popup and set the timer
-    if (diff >= 1000 * 60 * 10) {
-      localStorage.setItem("prevPopup", new Date().toString());
-      popupContainer.classList.add("popup-open");
-    }
-  } else {
-    // if local storage isn't available then it'll follow the traditional way of interval
-    setInterval(() => {
-      popupContainer.classList.add("popup-open");
-    }, 1000 * 60 * 10);
-  }
-}, 1000);
-
-// initialization
 window.onload = function () {
+  const styleEl = document.createElement("style");
+  styleEl.innerHTML = popupCss;
+  document.head.appendChild(styleEl);
+  document.body.insertAdjacentHTML("afterbegin", popupHtml);
+  popupContainer = document.querySelector(".popup-container");
+  btnClose = document.querySelector(".btn-close");
+  btnClose.addEventListener("click", closePopup);
   popupContainer.classList.add("popup-open");
 };
